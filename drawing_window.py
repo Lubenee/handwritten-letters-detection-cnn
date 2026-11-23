@@ -48,7 +48,6 @@ class Window:
         SIZE = constants.PREDICTION_WINDOW_SIZE # 28 * 10, so each model pixel = 10x10 screen pixels
         FONT = cv2.FONT_HERSHEY_SIMPLEX
 
-
         small, probs, top = self.predict()
         # left side with image
         big = cv2.resize(small, (SIZE, SIZE), interpolation=cv2.INTER_NEAREST)
@@ -69,7 +68,6 @@ class Window:
         return np.hstack([big, panel])
     
     def on_mouse(self, event, x, y, _flags, _params):
-        
         if event == cv2.EVENT_LBUTTONDOWN:
             self.is_drawing = True
             self.mouse_x, self.mouse_y = x, y
