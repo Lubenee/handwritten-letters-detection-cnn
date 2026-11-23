@@ -1,8 +1,6 @@
 import tensorflow_datasets as tfds
 import numpy as np
 
-LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abdefghnqrt"   # class index -> letter
-
 (ds_train, ds_test), ds_info = tfds.load(
     'emnist/balanced',
     split=['train', 'test'],
@@ -38,11 +36,12 @@ x_test = np.delete(x_test, remove_indices, axis=0)
 y_test = np.delete(y_test, remove_indices, axis=0)
 
 # offset train data by 10
-#now: 0-25 are A-Z, 26-36 are lowercase letters 
+# now: 0-25 are A-Z, 26-36 are lowercase letters 
 # (a b d e f g h n q r t)
 y_train = y_train - 10
 y_test = y_test - 10
 
+# the images in this dataset are rotated.
 x_train = np.transpose(x_train, (0, 2, 1, 3))
 x_test  = np.transpose(x_test,  (0, 2, 1, 3))
 
