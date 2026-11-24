@@ -55,17 +55,3 @@ def image_to_emnist_format(image):
     small = np.zeros((28, 28), np.float32)
     small[2:26, 2:26] = cv2.resize(square, (24, 24), interpolation=cv2.INTER_AREA)  # INTER_AREA averages pixels
     return small / 255.0
-
-def invert_normalize(x):
-    x = (255 - x.astype(np.float32)) / 255.0
-    return x[..., np.newaxis]                  
-
-def load_or_build_cyrilic_dataset():
-    dataset = file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
-    if dataset is None:
-        print("[WARN] Dataset archive not found, building it from the cmnist repo...")
-        if not get_train_data():
-            sys.exit("[ERROR] cmnist repo not found. ...")
-        dataset = file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
-
-    return {k: invert_normalize(v) if k.startswith("x_") else v for k, v in dataset.items()}

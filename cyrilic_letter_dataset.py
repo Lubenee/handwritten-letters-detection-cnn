@@ -43,3 +43,17 @@ def get_train_data(repo_folder = "cmnist"):
     file_handler.save_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE, arrays)
     print("[INFO] Saved " + constants.CYRILIC_DATASET_ARCHIVE + " (x_train, y_train, x_validation, ...)")
     return True
+
+def invert_normalize(x):
+    x = (255 - x.astype(np.float32)) / 255.0
+    return x[..., np.newaxis]                  
+
+def load_or_build_cyrilic_dataset():
+    dataset = file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
+    if dataset is None:
+        print("[WARN] Dataset archive not found, building it from the cmnist repo...")
+        if not get_train_data():
+            sys.exit("[ERROR] cmnist repo not found. ...")
+        dataset = file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
+
+    return {k: invert_normalize(v) if k.startswith("x_") else v for k, v in dataset.items()}

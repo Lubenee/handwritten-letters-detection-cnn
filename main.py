@@ -4,6 +4,7 @@ import file_handler
 from drawing_window import Window
 import helpers
 import constants
+import cyrilic_letter_dataset
 
 if __name__ == "__main__":
     cyrilic_model = file_handler.load_model(constants.CYRILIC_MODEL_FILENAME)
@@ -11,7 +12,7 @@ if __name__ == "__main__":
     
     if cyrilic_model is None:
         print("[WARN] Model " + constants.CYRILIC_MODEL_FILENAME + " not found. Training new model..")
-        dataset = helpers.load_or_build_cyrilic_dataset()
+        dataset = cyrilic_letter_dataset.load_or_build_cyrilic_dataset()
         cyrilic_model = create_cnn(len(constants.RUSSIAN_LETTERS))
         x_train, y_train = dataset["x_train"], dataset["y_train"]
         x_test, y_test = dataset["x_test"], dataset["y_test"]
