@@ -33,7 +33,7 @@ def load_split(repo, split="train", variant="allgr"):
     return np.stack(xs), np.array(ys, dtype=np.uint8)
 
 def get_train_data(repo_folder = "cmnist"):
-    if not os.path.exist(repo_folder):
+    if not os.path.exists(repo_folder):
         return False
     arrays = {}
     for split in ("train", "validation", "test"):

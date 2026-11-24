@@ -62,7 +62,7 @@ class Window:
             color = constants.BGR_GRAY
             if rank == 0: color = constants.BGR_GREEN
 
-            cv2.putText(panel, f"{constants.LETTERS[i]} {probs[i]:6.1%}", (10, y), FONT, 0.6, color, 1, cv2.LINE_AA)
+            cv2.putText(panel, f"{constants.RUSSIAN_LETTERS[i]} {probs[i]:6.1%}", (10, y), FONT, 0.6, color, 1, cv2.LINE_AA)
             bar_w = int(probs[i] * 100)              
             cv2.rectangle(panel, (110, y - 14), (110 + bar_w, y), color, -1) 
         return np.hstack([big, panel])
