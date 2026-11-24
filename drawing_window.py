@@ -4,11 +4,12 @@ import constants
 from helpers import image_to_emnist_format
 
 class Window:
-    def __init__(self, model):
+    def __init__(self, models, model_index=0):
         self.should_refresh = True
         self.should_predict = False
         self.frame = None
-        self.model = model
+        self.models = models
+        self.model_index = model_index
         
         self.pen_thickness = 30
         self.mouse_x = None
@@ -19,10 +20,11 @@ class Window:
     def run(self):
         cv2.namedWindow(constants.WINDOW)
         cv2.setMouseCallback(constants.WINDOW, self.on_mouse)
+        cv2.createTrackbar(constants.MODEL_TRACKBAR, constants.WINDOW, self.model_index, len(self.models) - 1, self.set_model)
         
         while(1):
             if self.should_refresh:
-                cv2.imshow(constants.WINDOW, self.frame)
+                cv2.imshow(constants.WINDOW, self.draw_drawing_window())
                 self.should_refresh = False
 
             if self.should_predict and self.frame.any(): # img.any(): skip if canvas is empty
@@ -35,12 +37,28 @@ class Window:
             elif key == ord('c'):
                 self.reset_frame()
                 self.should_refresh = True
+            elif key == ord('m'):
+                cv2.setTrackbarPos(constants.MODEL_TRACKBAR, constants.WINDOW, (self.model_index + 1) % len(self.models))
         cv2.destroyAllWindows()
+
+    def set_model(self, index):
+        if index == self.model_index:
+            return
+        self.model_index = index
+        self.should_refresh = True
+        self.should_predict = True
+        
+    def draw_drawing_window(self):
+        display = self.frame.copy()
+        name = self.models[self.model_index][0]
+        cv2.putText(display, "Model: " + name + " (m to switch)", (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.6, constants.BGR_GRAY, 1, cv2.LINE_AA)
+        return display
         
     def predict(self):
         small = image_to_emnist_format(self.frame)
         x = small.reshape(1, 28, 28, 1)
-        probs = self.model.predict(x, verbose=0)[0]
+        model = self.models[self.model_index][1]
+        probs = model.predict(x, verbose=0)[0]
         top = np.argsort(probs)[::-1][:10] # sort, reverse, keep first 10
         return small, probs, top
     
@@ -49,6 +67,7 @@ class Window:
         FONT = cv2.FONT_HERSHEY_SIMPLEX
 
         small, probs, top = self.predict()
+        letters = self.models[self.model_index][2]
         # left side with image
         big = cv2.resize(small, (SIZE, SIZE), interpolation=cv2.INTER_NEAREST)
         big = (big * 255).astype(np.uint8)
@@ -62,7 +81,7 @@ class Window:
             color = constants.BGR_GRAY
             if rank == 0: color = constants.BGR_GREEN
 
-            cv2.putText(panel, f"{constants.RUSSIAN_LETTERS[i]} {probs[i]:6.1%}", (10, y), FONT, 0.6, color, 1, cv2.LINE_AA)
+            cv2.putText(panel, f"{letters[i]} {probs[i]:6.1%}", (10, y), FONT, 0.6, color, 1, cv2.LINE_AA)
             bar_w = int(probs[i] * 100)              
             cv2.rectangle(panel, (110, y - 14), (110 + bar_w, y), color, -1) 
         return np.hstack([big, panel])

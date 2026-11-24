@@ -31,5 +31,8 @@ if __name__ == "__main__":
         test_loss, test_acc = test_cnn(latin_model, x_test, y_test)
         file_handler.log_model_data(latin_model, constants.LATIN_LOGS_FILE, constants.LATIN_MODEL_FILENAME, len(x_train), test_loss, test_acc)
         
-    drawingWindow = Window(cyrilic_model)
+    drawingWindow = Window([
+        ("Latin", latin_model, constants.LATIN_LETTERS),
+        ("Cyrillic", cyrilic_model, constants.RUSSIAN_LETTERS),
+    ], model_index=1)
     drawingWindow.run()
