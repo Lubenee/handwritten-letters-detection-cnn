@@ -26,5 +26,5 @@ def load_cyrilic_dataset(FILENAME):
         return np.load(FILENAME)
     
 def save_cyrilic_dataset(FILENAME, **arrays):
-    np.savez_compressed(FILENAME, arrays)
+    np.savez_compressed(FILENAME, **arrays)
     

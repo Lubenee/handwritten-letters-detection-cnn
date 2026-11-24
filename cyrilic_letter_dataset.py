@@ -6,6 +6,7 @@ Returns 28x28 grayscale images as numpy arrays plus labels 0..32 (А..Я).
 import csv
 from pathlib import Path
 import os
+import sys
 import constants
 import file_handler
 
@@ -40,7 +41,7 @@ def get_train_data(repo_folder = "cmnist"):
         x, y = load_split(repo_folder, split)
         arrays[f"x_{split}"], arrays[f"y_{split}"] = x, y
         print(f"[INFO] {split:<10} x={x.shape} y={y.shape} classes={len(set(y.tolist()))}")
-    file_handler.save_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE, arrays)
+    file_handler.save_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE, **arrays)
     print("[INFO] Saved " + constants.CYRILIC_DATASET_ARCHIVE + " (x_train, y_train, x_validation, ...)")
     return True
 

@@ -1,9 +1,5 @@
 import numpy as np
 import cv2
-import sys
-import file_handler
-import constants
-from cyrilic_letter_dataset import get_train_data
 
 # Builds a text description of the model's settings, read from the model itself.
 # This way it's correct even when the model was loaded from a .keras file

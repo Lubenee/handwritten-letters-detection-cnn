@@ -2,7 +2,6 @@ from latin_letter_dataset import get_train_set, get_test_set
 from cnn_model import create_cnn, train_cnn, test_cnn
 import file_handler
 from drawing_window import Window
-import helpers
 import constants
 import cyrilic_letter_dataset
 
