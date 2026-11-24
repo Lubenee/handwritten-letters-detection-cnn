@@ -1,5 +1,9 @@
 import numpy as np
 import cv2
+import sys
+import file_handler
+import constants
+from cyrilic_letter_dataset import get_train_data
 
 # Builds a text description of the model's settings, read from the model itself.
 # This way it's correct even when the model was loaded from a .keras file
@@ -51,3 +55,14 @@ def image_to_emnist_format(image):
     small = np.zeros((28, 28), np.float32)
     small[2:26, 2:26] = cv2.resize(square, (24, 24), interpolation=cv2.INTER_AREA)  # INTER_AREA averages pixels
     return small / 255.0
+
+def load_or_build_cyrilic_dataset():
+    dataset = file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
+    if dataset is not None:
+        return dataset
+
+    print("[WARN] Dataset archive not found, building it from the cmnist repo...")
+    if not get_train_data():
+        sys.exit("[ERROR] cmnist repo not found. Clone it into ./cmnist: "
+                 "https://github.com/bolattleubayev/cmnist.git")
+    return file_handler.load_cyrilic_dataset(constants.CYRILIC_DATASET_ARCHIVE)
