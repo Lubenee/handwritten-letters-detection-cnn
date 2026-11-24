@@ -1,0 +1,48 @@
+CYRILIC-LETTERS-MODEL.keras
+  Layers:
+    Conv2D(filters=4, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Conv2D(filters=8, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Flatten()
+    Dense(units=64, activation=relu)
+    Dropout(rate=0.2)
+    Dense(units=33, activation=softmax)
+  Total params: 15,345
+  Optimizer: Adam, learning_rate=0.001
+  Batch size: 32, Epochs: 10 (23550 steps)
+  Test loss: 3.4681
+  Test accuracy: 0.0512
+
+CYRILIC-LETTERS-MODEL.keras
+  Layers:
+    Conv2D(filters=4, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Conv2D(filters=8, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Flatten()
+    Dense(units=64, activation=relu)
+    Dropout(rate=0.2)
+    Dense(units=33, activation=softmax)
+  Total params: 15,345
+  Optimizer: Adam, learning_rate=0.001
+  Batch size: 32, Epochs: 10 (23550 steps)
+  Test loss: 3.4682
+  Test accuracy: 0.0512
+
+CYRILIC-LETTERS-MODEL.keras
+  Layers:
+    Conv2D(filters=4, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Conv2D(filters=8, kernel_size=(3, 3), activation=relu)
+    MaxPooling2D(pool_size=(2, 2))
+    Flatten()
+    Dense(units=64, activation=relu)
+    Dropout(rate=0.2)
+    Dense(units=33, activation=softmax)
+  Total params: 15,345
+  Optimizer: Adam, learning_rate=0.001
+  Batch size: 32, Epochs: 10 (23550 steps)
+  Test loss: 0.1922
+  Test accuracy: 0.9439
+
