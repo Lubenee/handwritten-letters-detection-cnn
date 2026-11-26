@@ -5,6 +5,12 @@ from drawing_window import Window
 import constants
 import cyrilic_letter_dataset
 
+def train_and_save(model, x_train, y_train, x_test, y_test, model_filename, logs_filename):
+    train_cnn(model, x_train, y_train, x_test, y_test)
+    file_handler.save_model(model_filename, model)
+    test_loss, test_acc = test_cnn(model, x_test, y_test)
+    file_handler.log_model_data(model, logs_filename, model_filename, len(x_train), test_loss, test_acc)
+
 if __name__ == "__main__":
     cyrilic_model = file_handler.load_model(constants.CYRILIC_MODEL_FILENAME)
     latin_model = file_handler.load_model(constants.LATIN_MODEL_FILENAME)
@@ -15,20 +21,14 @@ if __name__ == "__main__":
         cyrilic_model = create_cnn(len(constants.RUSSIAN_LETTERS))
         x_train, y_train = dataset["x_train"], dataset["y_train"]
         x_test, y_test = dataset["x_test"], dataset["y_test"]
-        train_cnn(cyrilic_model, x_train, y_train, x_test, y_test)
-        file_handler.save_model(constants.CYRILIC_MODEL_FILENAME, cyrilic_model)
-        test_loss, test_acc = test_cnn(cyrilic_model, x_test, y_test)
-        file_handler.log_model_data(cyrilic_model, constants.CYRILIC_LOGS_FILE, constants.CYRILIC_MODEL_FILENAME, len(x_train), test_loss, test_acc)
-
+        train_and_save(cyrilic_model, x_train, y_train, x_test, y_test, constants.CYRILIC_MODEL_FILENAME, constants.CYRILIC_LOGS_FILE)
+    
     if latin_model is None:
         print("[WARN] Model " + constants.LATIN_MODEL_FILENAME + " not found. Training new model..")
         latin_model = create_cnn(len(constants.LATIN_LETTERS))
         x_train, y_train = get_train_set()
         x_test, y_test = get_test_set()
-        train_cnn(latin_model, x_train, y_train, x_test, y_test)
-        file_handler.save_model(constants.LATIN_MODEL_FILENAME, latin_model)
-        test_loss, test_acc = test_cnn(latin_model, x_test, y_test)
-        file_handler.log_model_data(latin_model, constants.LATIN_LOGS_FILE, constants.LATIN_MODEL_FILENAME, len(x_train), test_loss, test_acc)
+        train_and_save(latin_model, x_train, y_train, x_test, y_test, constants.LATIN_MODEL_FILENAME, constants.LATIN_LOGS_FILE)
         
     drawingWindow = Window([
         ("Latin", latin_model, constants.LATIN_LETTERS),
